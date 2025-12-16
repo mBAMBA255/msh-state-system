@@ -1,0 +1,1 @@
+void transitionTo(State* newState);
