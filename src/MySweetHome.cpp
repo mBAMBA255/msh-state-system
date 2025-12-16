@@ -1,6 +1,17 @@
 #include "MySmartHome.h"
 #include "NormalState.h"
 #include <iostream>
+#include <fstream>
+#include <ctime>
+#include <string>
+
+void logEvent(const std::string& message) {
+    std::ofstream logFile("state_log.txt", std::ios::app);
+    if (logFile.is_open()) {
+        std::time_t now = std::time(nullptr);
+        logFile << std::ctime(&now) << " - " << message << std::endl;
+    }
+}
 
 MySmartHome::MySmartHome() {
     // Create the default state
@@ -28,6 +39,7 @@ void MySmartHome::transitionTo(State* newState) {
     // Apply the new state
     currentState = newState;
     std::cout << "Transitioned to new state." << std::endl;
+    logEvent("State changed");
 }
 
 void MySmartHome::restorePreviousState() {
@@ -35,7 +47,10 @@ void MySmartHome::restorePreviousState() {
         currentStateIndex--;                  // move back
         currentState = stateList[currentStateIndex]; // restore snapshot
         std::cout << "Restored to previous state." << std::endl;
+        currentState->applySettings();
+        logEvent("State restored");
     } else {
         std::cout << "Already at the first state." << std::endl;
+        logEvent("State restore attempted at base state");
     }
 }
