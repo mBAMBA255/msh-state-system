@@ -8,6 +8,9 @@ MySmartHome::MySmartHome() {
 
     // Add the initial state to the state list (snapshot)
     stateList.push_back(currentState);
+
+    // Set index pointer for current state
+    currentStateIndex = 0;  // first snapshot
 }
 
 void MySmartHome::showCurrentState() {
@@ -25,4 +28,14 @@ void MySmartHome::transitionTo(State* newState) {
     // Apply the new state
     currentState = newState;
     std::cout << "Transitioned to new state." << std::endl;
+}
+
+void MySmartHome::restorePreviousState() {
+    if (currentStateIndex > 0) {
+        currentStateIndex--;                  // move back
+        currentState = stateList[currentStateIndex]; // restore snapshot
+        std::cout << "Restored to previous state." << std::endl;
+    } else {
+        std::cout << "Already at the first state." << std::endl;
+    }
 }
