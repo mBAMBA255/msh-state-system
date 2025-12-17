@@ -1,5 +1,8 @@
 #include "MySmartHome.h"
 #include "NormalState.h"
+#include "HighPerformanceState.h"
+#include "LowPowerState.h"
+#include "SleepState.h"
 #include <iostream>
 #include <fstream>
 #include <ctime>
@@ -52,5 +55,22 @@ void MySmartHome::restorePreviousState() {
     } else {
         std::cout << "Already at the first state." << std::endl;
         logEvent("State restore attempted at base state");
+    }
+}
+
+void MySmartHome::showStateMenu() {
+    char choice;
+    std::cout << "\n--- Change State Menu ---\n";
+    std::cout << "(N) Normal\n(H) High Performance\n(L) Low Power\n(S) Sleep\n(P) Previous State\n";
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+
+    switch (choice) {
+        case 'N': case 'n': transitionTo(new NormalState()); break;
+        case 'H': case 'h': transitionTo(new HighPerformanceState()); break;
+        case 'L': case 'l': transitionTo(new LowPowerState()); break;
+        case 'S': case 's': transitionTo(new SleepState()); break;
+        case 'P': case 'p': restorePreviousState(); break;
+        default: std::cout << "Invalid choice.\n";
     }
 }

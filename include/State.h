@@ -4,7 +4,7 @@
 class State {
 public:
     virtual ~State() = default;
-    virtual void handle() = 0;
+    virtual void applySettings() = 0;  // This is the required method for all states
 };
 
 #endif
